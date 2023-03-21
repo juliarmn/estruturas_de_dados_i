@@ -18,7 +18,7 @@ int is_member(int, Set *);
 //Ver se está vazio:
 int is_empty(Set *);
 //Diferença de conjuntos
-Set *difference(Set *, Set *);
+// Set *difference(Set *, Set *);
 //printar
 void print_set(Set *);
 

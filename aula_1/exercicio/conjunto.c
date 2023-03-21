@@ -9,7 +9,33 @@ struct set {
 };
 
 int main(int argc, char *argv[]) {
-  // Falta fazer os testes!!!
+  Set *A, *B, *C, *D, *E, *F;
+  A = create();
+  B = create();
+  // C = create();
+  // D = create();
+  // E = create();
+  F = create();
+  // printf("%d  ",is_empty(A));
+  put_elem(A, 2);
+  put_elem(A, 1);
+  // printf("%d  ",is_empty(A));
+  // print_set(A);
+  put_elem(B, 1);
+  put_elem(B, 3);
+  // put_elem(B, 2);
+  // put_elem(B, 3);
+  // put_elem(B, 2);
+  // is_equal(A, B);
+  // printf("%d\n", is_equal(A, B));
+  C = add(A, B);
+  // printf("asdasd");
+  // print_set(C);
+  // D = intersection(A, B);
+  // print_set(D);
+  // printf("%d\n", is_member(3, A));
+  // E = difference(A, B);
+  // print_set(E);
   return 0;
 }
 
@@ -20,7 +46,7 @@ Set *create() {
 }
 
 int is_empty(Set *set) {
-  if (set->size == 1) {
+  if (set->size > 0) {
     return 0;
   }
   return 1;
@@ -42,8 +68,8 @@ void put_elem(Set *set, int elem) {
   if (!exist) {
     // Usar realloc
     set->element = realloc(set->element, sizeof(int) * (set->size + 1));
-    set->element[i] = elem;
-    set->size = i = 1;
+    set->element[set->size] = elem;
+    set->size = set->size + 1;
   }
 }
 
@@ -84,6 +110,7 @@ Set *add(Set *set_1, Set *set_2) {
   for (int i = 0; i < set_2->size; i++) {
     put_elem(new_set, set_2->element[i]);
   }
+  return new_set;
 }
 
 Set *intersection(Set *set_1, Set *set_2) {
@@ -96,12 +123,13 @@ Set *intersection(Set *set_1, Set *set_2) {
     return new_set;
   }
   for (int i = 0; i < set_1->size; i++) {
-    for (int j = 0; j < set_2->size; i++) {
+    for (int j = 0; j < set_2->size; j++) {
       if (set_1->element[i] == set_2->element[j]) {
         put_elem(new_set, set_1->element[i]);
       }
     }
   }
+  return new_set;
 }
 
 int is_member(int value, Set *set) {
@@ -114,32 +142,30 @@ int is_member(int value, Set *set) {
   return 0;
 }
 
-int is_empty(Set *set) {
-  if (set->size == 0) {
-    return 1;
-  }
-  return 0;
-}
-
-Set *difference(Set *set_1, Set *set_2) {
-  Set *new = create();
-  int i, j;
-  int in_set_2 = 0;
-  if (is_equal(set_1, set_2)) {
-    return 0;
-  }
-  for (i = 0; i < set_1->size; i++) {
-    for (j = 0; j < set_2->size; j++) {
-      if (set_1->element[i] == set_2->element[j]) {
-        in_set_2 = 1;
-      }
-      if (!in_set_2) {
-        put_elem(new, set_1->element[i]);
-      }
-      in_set_2 = 0;
-    }
-  }
-}
+// Set *difference(Set *set_1, Set *set_2) {
+//   Set *new = create();
+//   int i, j;
+//   int in_set_2 = 0;
+//   if (is_equal(set_1, set_2)) {
+//     return new;
+//   }
+//   for (i = 0; i < set_2->size; i++) {
+//     in_set_2 = 0;
+//     if(!is_member(set_2->element[i], set_1)) {
+//       put_elem(new, set_1);
+//     }
+//     for (j = 0; j < set_2->size; j++) {
+//       if (set_1->element[i] == set_2->element[j]) {
+//         in_set_2 = 1;
+//       }
+//       if (!in_set_2) {
+//         put_elem(new, set_1->element[i]);
+//       }
+//       in_set_2 = 0;
+//     }
+//   }
+//   return new;
+// }
 
 void print_set(Set *set) {
   if (set->size == 0) {
@@ -147,8 +173,8 @@ void print_set(Set *set) {
     return;
   }
   int i = 0;
-  while (i <= set->size) {
-    printf(" %d ", set->element[i]);
-    i ++;
+  while (i < set->size) {
+    printf("%d ", set->element[i]);
+    i++;
   }
 }
