@@ -134,20 +134,27 @@ void printa_elem(Elem elemento) {
   printf("%s\n", elemento.info.nome);
 }
 
-void eliminar_elemento(Lista *list, int *posicao) {
-  for (int i = (*posicao) + 1; i < list->num_elem; i++) {
+void eliminar_elemento(Lista *list, int posicao) {
+  for (int i = posicao + 1; i <= list->num_elem; i++) {
     list->elem[i - 1] = list->elem[i];
   }
   list->num_elem--;
 }
 
 void imprimir_lista(Lista *list) {
+  if (vazia(list)) {
+    printf("Lista vazia\n");
+  }
   if (!vazia(list)) {
-    for (int i = 0; i < list->num_elem; i++)
+    for (int i = 1; i <= list->num_elem; i++)
       printa_elem(list->elem[i]);
   }
 }
 
 void destruir_lista(Lista *list) {
   list->num_elem = 0;
+}
+
+int tamanho(Lista *list) {
+  return list->num_elem;
 }

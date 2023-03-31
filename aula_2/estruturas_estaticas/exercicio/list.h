@@ -25,9 +25,11 @@ bool busca_segundo_tipo(int posicao, Lista *list);
 //Printar o elemento:
 void printa_elem(Elem elemento);
 //Eliminar o elemento:
-void eliminar_elemento (Lista *list, int *posicao);
+void eliminar_elemento (Lista *list, int posicao);
 //Destrói a lista (logicamente)
 void destruir_lista (Lista *list);
 //Imprimir a lista:
 void imprimir_lista(Lista *list);
+//Tamanho da lista:
+int tamanho(Lista *list);
 #endif

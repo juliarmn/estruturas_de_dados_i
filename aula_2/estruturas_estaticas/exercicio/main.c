@@ -28,64 +28,78 @@ int main(int argc, char *argv[]) {
   int i = 1;
   do {
     do {
-      printf("Menu: \n");
+      printf("\nMenu: \n");
       printf("1) Inserir novo elemento\n");
       printf("2) Buscar elemento pela chave\n");
       printf("3) Buscar elemento pela posição\n");
       printf("4) Remover elemento\n");
       printf("5) Destruir lista\n");
+      printf("6) Mostrar a lista\n");
+      printf("7) Número de elmentos na lista\n");
       printf("0) Sair\n");
-    } while (op < 0 || op);
-    scanf("%d", &op);
+      scanf("%d", &op);
+    } while (op < 0 || op > 7);
     switch (op) {
-      case 1: {
-        printf("Digite o nome: ");
-        scanf("%[^\n]s", list.elem[i].info.nome);
-        list.elem[i].info.codigo = i;
-        inserir_elemento(&list, i, list.elem[i]);
-        i++;
-        break;
+    case 1: {
+      printf("Digite o nome: ");
+      scanf(" %[^\n]s", list.elem[i].info.nome);
+      list.elem[i].info.codigo = i;
+      list.elem[i].key = i;
+      inserir_elemento(&list, i, list.elem[i]);
+      i++;
+      break;
+    }
+    case 2: {
+      printf("Digite a chave do elemento: ");
+      scanf("%d", &key_busca);
+      pos = busca_primeiro_tipo(key_busca, &list);
+      if (pos == -1) {
+        printf("Elemento não encontrado.\n");
+      } else {
+        printf("Elemento encontrado na posição %d:\n", pos);
+        printa_elem(list.elem[pos]);
       }
-      case 2: {
-        printf("Digite a chave do elemento: ");
-        scanf("%d", &key_busca);
-        pos = busca_primeiro_tipo(key_busca, &list);
-        if (pos == -1) {
-          printf("Elemento não encontrado.\n");
-        } else {
-          printf("Elemento encontrado na posição %d:\n", pos);
-          printa_elem(list.elem[pos]);
-        }
-        break;
+      break;
+    }
+    case 3: {
+      printf("Digite a posição: ");
+      scanf("%d", &pos);
+      if (busca_segundo_tipo(pos, &list)) {
+        printf("Elemento encontrado.\n");
+      } else {
+        printf("Elemento não encontrado.\n");
       }
-      case 3: {
-        printf("Digite a posição: ");
-        scanf("%d", &pos);
-        if (busca_segundo_tipo(pos, &list)) {
-          printf("Elemento encontrado.\n");
-        } else {
-          printf("Elemento não encontrado.\n");
-        }
-        break;
+      break;
+    }
+    case 4: {
+      printf("Digite a posição do elmento para remover: ");
+      scanf("%d", &pos);
+      if (busca_segundo_tipo(pos, &list)) {
+        eliminar_elemento(&list, pos);
+      } else {
+        printf("Esse elemento não existe.\n");
       }
-      case 4: {
-        printf("Digite a posição do elmento para remover: ");
-        scanf("%d", &pos);
-        if(busca_segundo_tipo(pos, &list)) {
-          eliminar_elemento(&list, &pos);
-        } else {
-          printf("Esse elemento não existe.\n");
-        }
-        break;
+      break;
+    }
+    case 5: {
+      if (!vazia(&list)) {
+        destruir_lista(&list);
+        i = 1;
+      } else {
+        printf("Essa lista não possui nada\n");
       }
-      case 5: {
-        if (!vazia(&list)) {
-          destruir_lista(&list);
-        } else {
-          printf("Essa lista já está vazia!\n");
-        }
-        break;
+      break;
+    }
+    case 6: {
+      imprimir_lista(&list);
+      break;
+    }
+      case 7: {
+        printf("O tamanho é: %d\n", tamanho(&list)); break;
       }
+    default:
+      printf("Até a próxima\n");
+      break;
     }
   } while (op != 0);
   return 0;
