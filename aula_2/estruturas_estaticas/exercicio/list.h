@@ -32,4 +32,6 @@ void destruir_lista (Lista *list);
 void imprimir_lista(Lista *list);
 //Tamanho da lista:
 int tamanho(Lista *list);
+//Inserir ordenado pela chave
+bool inserir_ordenado_chave(Lista *list, chave chave, Elem pessoa, int *pos);
 #endif

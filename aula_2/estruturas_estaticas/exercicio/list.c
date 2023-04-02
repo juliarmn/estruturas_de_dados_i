@@ -88,6 +88,7 @@ void inserir_elemento(Lista *list, int posicao, Elem pessoa) {
     for (int i = list->num_elem; i >= posicao; i--) {
       list->elem[i + 1] = list->elem[i];
     }
+    list->elem[posicao].info.codigo = posicao;
     list->elem[posicao] = pessoa;
     list->num_elem++;
     return;
@@ -130,8 +131,9 @@ bool busca_segundo_tipo(int posicao, Lista *list) {
 }
 
 void printa_elem(Elem elemento) {
-  printf("%d\n", elemento.info.codigo);
-  printf("%s\n", elemento.info.nome);
+  printf("posição: %d\n", elemento.info.codigo);
+  printf("nome: %s\n", elemento.info.nome);
+  printf("chave: %d\n", elemento.key);
 }
 
 void eliminar_elemento(Lista *list, int posicao) {
@@ -157,4 +159,25 @@ void destruir_lista(Lista *list) {
 
 int tamanho(Lista *list) {
   return list->num_elem;
+}
+
+bool inserir_ordenado_chave(Lista *list, chave chave, Elem pessoa, int *pos) {
+  *pos = list->num_elem + 1;
+  int i;
+  if (vazia(list)) {
+    inserir_elemento(list, *pos, pessoa);
+    return true;
+  }
+  if (!cheia(list) && busca_primeiro_tipo(chave, list) == -1) {
+    for (i = list->num_elem; list->elem[i].key >= chave && i > 0; i--) {
+      (*pos)--;
+    }
+    inserir_elemento(list, *pos,pessoa);
+    return true;
+  }
+  if (busca_primeiro_tipo(chave, list) != -1) {
+    printf("Já existe elemento com essa chave!\n");
+    printf("Erro ao inserir\n");
+    return false;
+  }
 }
