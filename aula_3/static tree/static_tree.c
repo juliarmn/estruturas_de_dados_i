@@ -4,34 +4,43 @@
 #define MAX 100
 
 #include "tree.h"
-
-typedef struct node {// Relações locais
+struct node {// Relações locais
   int value;
   int left;
   int right;
   int used;
-}T_node;
+};
 
-typedef struct tree {// Relações globais
+struct tree {// Relações globais
   T_node buffer[MAX];
   int root; // Se não existir usa índice negativo
-}T_tree;
+};
 
 int main(){
     T_tree tree;
 
     init_tree(&tree);
+
+  if (is_balanced(&tree, 0)) {
+      printf("Balanceada\n");
+    } else {
+      printf("Não balanceada\n");
+    }
+
+  
     create_root(&tree, 1);
 
-    insert_left_child(&tree, (&tree)->root, 2);
-    insert_right_child(&tree, (&tree)->root, 3);
-    insert_left_child(&tree, (&tree)->buffer[1], 4);
-    insert_right_child(&tree, (&tree)->buffer[1], 5);
-    insert_left_child(&tree, (&tree)->buffer[2], 6);
-    insert_right_child(&tree, (&tree)->buffer[2], 7);
+    
 
-    printf("A altura é: %d", calc_height(&tree, 0));
-    printf("A quantidade de nós é: %d", calc_number_of_nodes(&tree));
+    insert_left_child(&tree, &(tree).buffer[0], 2);
+    insert_right_child(&tree, &(tree).buffer[0], 3);
+    insert_left_child(&tree, &(tree).buffer[1], 4);
+    insert_right_child(&tree, &(tree).buffer[1], 5);
+    insert_left_child(&tree, &(tree).buffer[2], 6);
+    insert_right_child(&tree, &(tree).buffer[2], 7);
+
+    printf("A altura é: %d\n", calc_height(&tree, 0));
+    printf("A quantidade de nós é: %d\n", calc_number_of_nodes(&tree));
 
     if (is_balanced(&tree, 0)) {
       printf("Balanceada\n");
@@ -39,10 +48,15 @@ int main(){
       printf("Não balanceada\n");
     }
     
-
+    printf("Pré-ordem: ");
     pre_order(&tree, 0);
+    printf("\n");
+    printf("In-ordem: ");
     in_order(&tree, 0);
+    printf("\n");
+    printf("Pos-ordem: ");
     pos_order(&tree, 0);
+    printf("\n");
     return 0;
 }
 
@@ -67,28 +81,27 @@ int i;
   return -1; // Não tem mais espaço vazio
 }
 
-bool insert_left_child (T_tree *tree, T_node *parent, int value) {
+void insert_left_child (T_tree *tree, T_node *parent, int value) {
   int free_position = get_empty_node(tree);
   if (free_position < 0) {
-    return false;
+    return;
   }
   parent->left = free_position;
   tree->buffer[free_position].value = value;
   tree->buffer[free_position].left = tree->buffer[free_position].right = -1;
   tree->buffer[free_position].used = 1;
-  return true;
+
 }
 
-bool insert_right_child (T_tree *tree, T_node *parent, int value) {
+void insert_right_child (T_tree *tree, T_node *parent, int value) {
   int free_position = get_empty_node(tree);
   if (free_position < 0) {
-    return false;
+    return;
   }
   parent->right = free_position;
   tree->buffer[free_position].value = value;
   tree->buffer[free_position].left = tree->buffer[free_position].right = -1;
   tree->buffer[free_position].used = 1;
-  return true;
 }
 
 void create_root (T_tree* tree, int value) {
@@ -133,7 +146,7 @@ bool is_balanced (T_tree *tree, int index) {
     return true;
   }
 
-  if (tree->buffer[index].left != -1 && tree->buffer[index].left == -1) {
+  if (tree->buffer[index].left != -1 && tree->buffer[index].right != -1) {
     return (is_balanced(tree, tree->buffer[index].left) && is_balanced(tree, tree->buffer[index].right));
   }
 
@@ -165,11 +178,11 @@ void in_order(T_tree* tree, int index) {
   in_order(tree, tree->buffer[index].right);
 }
 
-void post_order(T_tree* tree, int index) {
+void pos_order(T_tree* tree, int index) {
   if (index < 0 || !tree->buffer[index].used) {
     return;
   }
-  post_order(tree, tree->buffer[index].left);
-  post_order(tree, tree->buffer[index].right);
+  pos_order(tree, tree->buffer[index].left);
+  pos_order(tree, tree->buffer[index].right);
   printf("%d ", tree->buffer[index].value);
 }
