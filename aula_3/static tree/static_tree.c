@@ -17,9 +17,33 @@ typedef struct tree {// Relações globais
   int root; // Se não existir usa índice negativo
 }T_tree;
 
-int main () {
-  
-  return 0;
+int main(){
+    T_tree tree;
+
+    init_tree(&tree);
+    create_root(&tree, 1);
+
+    insert_left_child(&tree, (&tree)->root, 2);
+    insert_right_child(&tree, (&tree)->root, 3);
+    insert_left_child(&tree, (&tree)->buffer[1], 4);
+    insert_right_child(&tree, (&tree)->buffer[1], 5);
+    insert_left_child(&tree, (&tree)->buffer[2], 6);
+    insert_right_child(&tree, (&tree)->buffer[2], 7);
+
+    printf("A altura é: %d", calc_height(&tree, 0));
+    printf("A quantidade de nós é: %d", calc_number_of_nodes(&tree));
+
+    if (is_balanced(&tree, 0)) {
+      printf("Balanceada\n");
+    } else {
+      printf("Não balanceada\n");
+    }
+    
+
+    pre_order(&tree, 0);
+    in_order(&tree, 0);
+    pos_order(&tree, 0);
+    return 0;
 }
 
 void init_tree(T_tree *tree) {// Inicializa a árvore -> evitar lixo de memória
