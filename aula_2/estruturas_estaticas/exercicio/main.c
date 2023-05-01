@@ -7,7 +7,7 @@
 
 struct dados {
   char nome[80];
-  int codigo;
+  int posicao;
 };
 
 struct elemento {
@@ -29,7 +29,6 @@ int main(int argc, char *argv[]) {
   do {
     do {
       printf("\nMenu: \n");
-      //printf("1) Inserir novo elemento pela posição\n");
       printf("1) Inserir novo elemento\n");
       printf("2) Buscar elemento pela chave\n");
       printf("3) Buscar elemento pela posição\n");
@@ -37,7 +36,6 @@ int main(int argc, char *argv[]) {
       printf("5) Destruir lista\n");
       printf("6) Mostrar a lista\n");
       printf("7) Número de elmentos na lista\n");
-      //printf("8) Inserir novo elemento pela chave\n");
       printf("0) Sair\n");
       scanf("%d", &op);
     } while (op < 0 || op > 7);
@@ -48,8 +46,7 @@ int main(int argc, char *argv[]) {
         printf("Digite a chave do elemento: ");
         scanf("%d", &key);
         list.elem[i].key = key;
-        list.elem[i].info.codigo = 1;
-        if(inserir_ordenado_chave(&list, list.elem[i].key, list.elem[i], &list.elem[i].info.codigo)){
+        if(inserir_ordenado_chave(&list, list.elem[i].key, list.elem[i])){
           printf("Inserido com sucesso\n");
         } else {
           printf("Erro ao inserir\n");
@@ -106,16 +103,6 @@ int main(int argc, char *argv[]) {
         printf("O tamanho é: %d\n", tamanho(&list));
         break;
       }
-      // case 8: {
-      //   printf("Digite o nome: ");
-      //   scanf(" %[^\n]s", list.elem[i].info.nome);
-      //   printf("Digite a chave do elemento: ");
-      //   scanf("%d", &key);
-      //   list.elem[i].key = key;
-      //   inserir_ordenado_chave(&list, key, list.elem[i]);
-      //   i++;
-      //   break;
-      // }
       default:
         printf("Até a próxima\n");
         break;

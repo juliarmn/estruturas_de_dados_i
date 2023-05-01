@@ -37,6 +37,7 @@ int main() {
   insert_right_child(&tree, &(tree).buffer[2], 7);
   insert_left_child(&tree, &(tree).buffer[3], 8);
   insert_left_child(&tree, &(tree).buffer[7], 9);
+  remove_node(&tree, 4);
 
   printf("A altura é: %d\n", calc_height(&tree, 0));
   printf("A quantidade de nós é: %d\n", calc_number_of_nodes(&tree));
@@ -183,4 +184,15 @@ void pos_order(T_tree *tree, int index) {
   pos_order(tree, tree->buffer[index].left);
   pos_order(tree, tree->buffer[index].right);
   printf("%d ", tree->buffer[index].value);
+}
+
+void remove_node (T_tree *tree, int id) {
+  for (int i = 0; i < MAX; i ++) {
+    if (tree->buffer[tree->buffer[i].left].value == id) {
+      tree->buffer[tree->buffer[i].left].used = 0;
+      tree->buffer[i].left = tree->buffer[tree->buffer[i].left].left;
+      return;
+    }
+  }
+  printf("Num tem\n");
 }

@@ -15,4 +15,5 @@ bool is_balanced (T_tree *tree, int index);
 void pre_order(T_tree* tree, int index);
 void in_order(T_tree* tree, int index);
 void pos_order(T_tree* tree, int index);
+void remove_node (T_tree *tree, int id);
 #endif

@@ -33,5 +33,7 @@ void imprimir_lista(Lista *list);
 //Tamanho da lista:
 int tamanho(Lista *list);
 //Inserir ordenado pela chave
-bool inserir_ordenado_chave(Lista *list, chave chave, Elem pessoa, int *pos);
+bool inserir_ordenado_chave(Lista *list, chave chave, Elem pessoa);
+//Função para atualizar as posições anteriores  e posteriores ao inserir um novo elemento na lista
+void atualizarPosicao(Lista *list, int posicao);
 #endif
