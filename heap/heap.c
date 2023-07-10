@@ -52,20 +52,6 @@ void altera_prioridade (fila_prioritaria *f, int posicao, int novo_valor) {
   }
 }
 
-// void desce_no_heap_2(fila_prioritaria *f, int posicao, int n) {
-//   int maior_filho;
-//   if (filho_esquerdo(posicao) < n) {
-//     maior_filho = filho_esquerdo(posicao);
-//     if (filho_dir(posicao) < n && f->chave[filho_esquerdo(posicao)] < f->chave[filho_dir(posicao)]) {
-//       maior_filho = filho_dir(posicao);
-//     }
-//     if (f->chave[posicao] < f->chave[maior_filho]) {
-//       permuta(&f->chave[posicao], &f->chave[maior_filho]);
-//       desce_no_heap_2(f, maior_filho, n);
-//     }
-//   }
-// }
-
 void constroi_heap(fila_prioritaria *f) {
   int meio = (f->posicao-1 / 2);
   for (int i = meio; i >= 0; i--) {
