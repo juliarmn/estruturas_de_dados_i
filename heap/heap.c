@@ -52,6 +52,20 @@ void altera_prioridade (fila_prioritaria *f, int posicao, int novo_valor) {
   }
 }
 
+// void desce_no_heap_2(fila_prioritaria *f, int posicao, int n) {
+//   int maior_filho;
+//   if (filho_esquerdo(posicao) < n) {
+//     maior_filho = filho_esquerdo(posicao);
+//     if (filho_dir(posicao) < n && f->chave[filho_esquerdo(posicao)] < f->chave[filho_dir(posicao)]) {
+//       maior_filho = filho_dir(posicao);
+//     }
+//     if (f->chave[posicao] < f->chave[maior_filho]) {
+//       permuta(&f->chave[posicao], &f->chave[maior_filho]);
+//       desce_no_heap_2(f, maior_filho, n);
+//     }
+//   }
+// }
+
 void constroi_heap(fila_prioritaria *f) {
   int meio = (f->posicao-1 / 2);
   for (int i = meio; i >= 0; i--) {
@@ -59,14 +73,29 @@ void constroi_heap(fila_prioritaria *f) {
   }
 }
 
-void heapsort(fila_prioritaria *f) {
-  constroi_heap(f);
-  int k = f->posicao;
-  while (k > 1) {
-    permuta(&(f->chave[0]), &(f->chave[k-1]));
-    k--;
-    desce_no_heap(f, 0);
-  } 
+void heapify (fila_prioritaria *f, int tam, int i) {
+  int maior = i;
+  if (filho_esquerdo(i) < tam && f->chave[filho_esquerdo(i)] > f->chave[maior]) {
+    maior = filho_esquerdo(i);
+  }
+  if (filho_dir(i) < tam && f->chave[filho_dir(i)] > f->chave[maior]) {
+    maior = filho_dir(i);
+  }
+  if (maior != i) {
+    permuta(&(f->chave[i]), &(f->chave[maior]));
+    heapify(f, tam, maior);
+  }
+}
+
+void heapsort (fila_prioritaria *f) {
+	int k;
+	for (k = (f->posicao) / 2 - 1; k >= 0; k--)
+		heapify(f, f->posicao,k);
+		
+  for (k = f->posicao - 1; k >= 0; k --) {
+    permuta(&(f->chave[0]), &(f->chave[k]));
+    heapify(f, k, 0);
+  }
 }
 
 void imprime_fila (fila_prioritaria *filapri) {
