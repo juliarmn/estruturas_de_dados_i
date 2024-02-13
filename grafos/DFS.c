@@ -1,133 +1,72 @@
 #include "dfs.h"
 
-int tempo = 0;
-
 struct No {
-    int elem;
+    int vertice;
     struct No *prox;
-    int visitado;
-    int encontrado;
-    int final;
 };
 
 struct Grafo {
-    no **node;
     int num_vert;
+    int *visitado;
+    struct No **lista_adj;
 };
 
-no *inicializar_no_vazio() {
-    no *n = malloc(sizeof(no));
-    if (n == NULL) {
-        fprintf(stderr, "Erro: Falha ao alocar memória para nó\n");
-        exit(EXIT_FAILURE);
-    }
-    n->elem = 0;
-    n->prox = NULL;
-    n->visitado = 0; // 0 = branco
-    n->encontrado = 0; // ainda nao foi encontrado
-    n->final = 0;
-    return n;
+no * criar_no (int vertice) {
+    no *novo = malloc(sizeof(no));
+    novo->vertice = vertice;
+    novo->prox = NULL;
+    return novo;
 }
 
-grafo *inicializar_grafo_vazio(int num_vertices) {
+grafo * criar_grafo (int num_vertices) {
+    int i = 0;
     grafo *g = malloc(sizeof(grafo));
-    if (g == NULL) {
-        fprintf(stderr, "Erro: Falha ao alocar memória para grafo\n");
-        exit(EXIT_FAILURE);
-    }
-    g->node = malloc(num_vertices * sizeof(no *));
-    for (int i = 0 ; i < num_vertices; i ++) {
-        g->node[i] = malloc(sizeof(no));
-    }
-    if (g->node == NULL) {
-        fprintf(stderr, "Erro: Falha ao alocar memória para nós do grafo\n");
-        exit(EXIT_FAILURE);
-    }
-    for (int i = 0; i < num_vertices; i++) {
-        g->node[i]->elem = 0;
-        g->node[i]->prox = NULL;
-        g->node[i]->visitado = 0;
-        g->node[i]->encontrado = 0;
-        g->node[i]->final = 0;
-    }
     g->num_vert = num_vertices;
+    g->lista_adj = malloc(num_vertices*sizeof(no*));
+    g->visitado = calloc(num_vertices, sizeof(int));
 
+    for (; i < num_vertices; i ++)
+        g->lista_adj[i] = NULL;
     return g;
 }
 
-grafo *inserir_grafo(int v1, int v2, grafo *g) {
-    no *novo_no = inicializar_no_vazio();
-    novo_no->elem = v2;
-
-    novo_no->prox = NULL; // Inicializando o ponteiro próximo como NULL
-
-    if (g->node[v1-1]->prox == NULL) {
-        g->node[v1-1]->prox = novo_no;
-    } else {
-        no *aux = g->node[v1-1]->prox;
-        while (aux->prox != NULL) {
-            aux = aux->prox;
-        }
-        aux->prox = novo_no;
-    }
-    return g;
+void adicionar_relacao (grafo *g, int origem, int destino) {
+    no *novo = criar_no(destino);
+    novo->prox = g->lista_adj[origem];
+    g->lista_adj[origem] = novo;
+    novo = criar_no(origem);
+    novo->prox = g->lista_adj[destino];
+    g->lista_adj[destino] = novo;
 }
 
-void dfs_visitado(no *node, grafo *g) {
-    printf("%d", node->elem);
-    node->visitado = 1; // cinza
-    tempo++;
-    node->encontrado = tempo;
-    no *aux = node->prox;
-    while (aux) {
-        if (aux->visitado == 0) {
-            aux->visitado = 1;
-            dfs_visitado(aux, g); // Passando o ponteiro do grafo por referência
-            tempo++;
+void dfs (grafo *g, int v) {
+    g->visitado[v] = 1;
+    printf("[%d] ", v);
+
+    no *adj = g->lista_adj[v];
+    no *aux = adj;
+
+    while (aux != NULL) {
+        int conectado = aux->vertice;
+
+        if (g->visitado[conectado] == 0) {
+            dfs(g, conectado);
         }
         aux = aux->prox;
     }
-    node->visitado = 2; // preto
-    node->final = tempo;
 }
 
-int *dfs(grafo *g) {
-    int *visitado;
-    visitado = malloc(g->num_vert * sizeof(int));
-    if (visitado == NULL) {
-        fprintf(stderr, "Erro: Falha ao alocar memória para vetor de visitados\n");
-        exit(EXIT_FAILURE);
-    }
-
-    int indice = 0; 
-
-    for (int i = 0; i < g->num_vert; i++) {
-        if (g->node[i]->visitado == 0) {
-            dfs_visitado(g->node[i], g);
-        }
-    }
-
-    for (int i = 0; i < g->num_vert; i++) {
-        if (g->node[i]->visitado == 2) {
-            visitado[indice] = g->node[i]->elem;
-            indice++;
-        }
-    }
-
-    return visitado;
-}
 
 void imprimir_grafo(grafo *g) {
-    for (int i = 0; i < g->num_vert; i++) {
-        printf("Nó %d: ", i+1);
-        no *atual = g->node[i]->prox;
-        while (atual != NULL) {
-            printf("%d ", atual->elem);
-            atual = atual->prox;
+    int v;
+    for (v = 0; v < g->num_vert; v++) {
+        no* temp = g->lista_adj[v];
+        printf("%d|  ", v);
+        while (temp) {
+            printf("%d -> ", temp->vertice);
+            temp = temp->prox;
         }
         printf("\n");
     }
 }
-
-
 
