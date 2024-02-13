@@ -2,12 +2,12 @@
 #define EDI_DFS_H
 #include <stdio.h>
 #include <stdlib.h>
-typedef struct No no;
 typedef struct Grafo grafo;
-no * inicializar_no_vazio ();
-grafo * inicializar_grafo_vazio (int num_vertices);
-grafo * inserir_grafo (int v1, int v2, grafo *g);
-void dfs_visitado(no *node, grafo *g);
-int * dfs (grafo *g);
+typedef struct No no;
+no * criar_no (int vertice);
+grafo * criar_grafo (int num_vertices);
+void adicionar_relacao (grafo *g, int origem, int destino);
+void dfs (grafo *g, int v);
 void imprimir_grafo(grafo *g);
+
 #endif //EDI_DFS_H
